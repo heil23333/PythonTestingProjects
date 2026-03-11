@@ -1,0 +1,62 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "alice",
+      "password": "123456",
+      "role": "student",
+      "nickname": "Alice"
+    },
+    {
+      "id": 2,
+      "username": "bob",
+      "password": "123456",
+      "role": "tester",
+      "nickname": "Bob"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Mechanical Keyboard",
+      "category": "keyboard",
+      "price": 399.0,
+      "created_by": "system"
+    },
+    {
+      "id": 2,
+      "name": "Wireless Mouse",
+      "category": "mouse",
+      "price": 129.0,
+      "created_by": "system"
+    },
+    {
+      "id": 3,
+      "name": "27-inch Monitor",
+      "category": "monitor",
+      "price": 1299.0,
+      "created_by": "system"
+    },
+    {
+      "id": 4,
+      "name": "USB-C Hub",
+      "category": "accessory",
+      "price": 169.0,
+      "created_by": "system"
+    },
+    {
+      "id": 5,
+      "name": "Notebook Stand",
+      "category": "accessory",
+      "price": 89.0,
+      "created_by": "system"
+    },
+    {
+      "id": 6,
+      "name": "Noise Cancelling Headphones",
+      "category": "audio",
+      "price": 899.0,
+      "created_by": "system"
+    }
+  ]
+}
