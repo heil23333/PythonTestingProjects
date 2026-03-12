@@ -6,6 +6,7 @@
 
 - `requests`
 - `requests.get/post/delete`
+- `pytest`
 - `params`
 - `json`
 - `data`
