@@ -1,6 +1,6 @@
 import requests
+from config import BASE_URL
 
-BASE_URL = "http://127.0.0.1:5001"
 
 def test_health():
     resp = requests.get(f"{BASE_URL}/health")

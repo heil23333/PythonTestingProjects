@@ -1,15 +1,19 @@
 import pytest
 import requests
-
-BASE_URL = "http://127.0.0.1:5001"
+from config import BASE_URL, PASSWORD, USERNAME, TIMEOUT
 
 @pytest.fixture
-def login_token():
+def reset_data():
+    requests.post(f"{BASE_URL}/api/v1/debug/reset", timeout=TIMEOUT)
+
+
+@pytest.fixture
+def login_token(reset_data):
     resp = requests.post(
         f"{BASE_URL}/api/v1/login",
         json={
-            "username": "alice",
-            "password": "123456"
+            "username": USERNAME,
+            "password": PASSWORD
         }
     )
     body = resp.json()
@@ -20,5 +24,5 @@ def login_token():
     return body["data"]["token"]
 
 @pytest.fixture
-def base_url():
-    return "http://127.0.0.1:5001"
+def auth_headers(login_token):
+    return {"Authorization": f"Bearer {login_token}"}

@@ -1,6 +1,8 @@
 import requests
 import pytest
 
+from config import BASE_URL, TIMEOUT
+
 @pytest.mark.parametrize(
     "product_id, status_code, code, message",
     [
@@ -8,9 +10,10 @@ import pytest
         (10, 404, 10041, "product not found"),
     ]
 )
-def test_products(base_url, product_id, status_code, code, message):
+def test_products(product_id, status_code, code, message):
     resp = requests.get(
-        f"{base_url}/api/v1/products/{product_id}"
+        f"{BASE_URL}/api/v1/products/{product_id}",
+        timeout=TIMEOUT
     )
     
     assert resp.status_code == status_code

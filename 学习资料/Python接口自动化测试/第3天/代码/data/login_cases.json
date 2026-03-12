@@ -1,0 +1,23 @@
+[
+    {
+        "username": "alice",
+        "password": "123456",
+        "expected_status": 200,
+        "expected_code": 0,
+        "expected_message": "success"
+    },
+    {
+    "username": "alice",
+    "password": "wrong",
+    "expected_status": 401,
+    "expected_code": 10014,
+    "expected_message": "password error"
+    },
+    {
+        "username": "",
+        "password": "123456",
+        "expected_status": 400,
+        "expected_code": 10011,
+        "expected_message": "username required"
+    }
+]

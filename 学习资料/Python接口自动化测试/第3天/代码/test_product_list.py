@@ -1,6 +1,5 @@
 import requests
-
-BASE_URL = "http://127.0.0.1:5001"
+from config import BASE_URL, TIMEOUT
 
 def test_product_list():
     resp = requests.get(
@@ -9,6 +8,7 @@ def test_product_list():
             "page": 1,
             "page_size": 3,
         },
+        timeout=TIMEOUT
     )
     body = resp.json()
 

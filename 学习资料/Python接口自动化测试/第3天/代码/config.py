@@ -1,0 +1,4 @@
+BASE_URL = "http://127.0.0.1:5001"
+USERNAME = "alice"
+PASSWORD = "123456"
+TIMEOUT = 5

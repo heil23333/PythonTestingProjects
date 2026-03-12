@@ -1,10 +1,9 @@
 import requests
-
-BASE_URL = "http://127.0.0.1:5001"
+from config import BASE_URL, TIMEOUT
 
 def test_profile(login_token):
     headers = {"Authorization": f"Bearer {login_token}"}
-    resp = requests.get(f"{BASE_URL}/api/v1/profile", headers=headers)
+    resp = requests.get(f"{BASE_URL}/api/v1/profile", headers=headers, timeout=TIMEOUT)
     body = resp.json()
 
     assert resp.status_code == 200
