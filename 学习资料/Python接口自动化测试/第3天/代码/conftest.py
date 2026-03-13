@@ -1,25 +1,29 @@
 import pytest
-import requests
-from config import BASE_URL, PASSWORD, USERNAME, TIMEOUT
+from common.request_handler import send_request
+from config.settings import BASE_URL, PASSWORD, USERNAME
+from common.assert_util import assert_success_response
 
 @pytest.fixture
 def reset_data():
-    requests.post(f"{BASE_URL}/api/v1/debug/reset", timeout=TIMEOUT)
+    reset_resp = send_request("POST", f"{BASE_URL}/api/v1/debug/reset")
+    assert reset_resp.json()["data"]["reset"] == True
+    assert_success_response(reset_resp, reset_resp.json(), message="data reset")
 
 
 @pytest.fixture
 def login_token(reset_data):
-    resp = requests.post(
+    resp = send_request(
+        "POST", 
         f"{BASE_URL}/api/v1/login",
         json={
             "username": USERNAME,
             "password": PASSWORD
         }
     )
+    
     body = resp.json()
 
-    assert resp.status_code == 200
-    assert body["code"] == 0
+    assert_success_response(resp, body)
 
     return body["data"]["token"]
 

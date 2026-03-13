@@ -1,5 +1,7 @@
-{
-    "name": "Desk Lamp",
-    "category": "lighting",
-    "price": 199
-}
+[
+    {
+        "name": "Desk Lamp",
+        "category": "lighting",
+        "price": 199
+    }
+]

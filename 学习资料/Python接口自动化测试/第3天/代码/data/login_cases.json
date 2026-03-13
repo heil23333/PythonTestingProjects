@@ -7,11 +7,11 @@
         "expected_message": "success"
     },
     {
-    "username": "alice",
-    "password": "wrong",
-    "expected_status": 401,
-    "expected_code": 10014,
-    "expected_message": "password error"
+        "username": "alice",
+        "password": "wrong",
+        "expected_status": 401,
+        "expected_code": 10014,
+        "expected_message": "password error"
     },
     {
         "username": "",
@@ -19,5 +19,12 @@
         "expected_status": 400,
         "expected_code": 10011,
         "expected_message": "username required"
+    },
+    {
+        "username": "heli",
+        "password": "123456",
+        "expected_status": 404,
+        "expected_code": 10013,
+        "expected_message": "user not found"
     }
 ]
