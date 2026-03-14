@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 2 - 定位与交互练习页</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <main class="shell">
+    <nav class="nav">
+      <a href="../index.html">首页</a>
+      <a href="./day1.html">Day 1</a>
+      <a class="active" href="./day2.html">Day 2</a>
+      <a href="./day3.html">Day 3</a>
+      <a href="./day4_login.html">Day 4</a>
+    </nav>
+
+    <section class="hero">
+      <p class="eyebrow">Day 2</p>
+      <h1>元素定位与页面交互练习页</h1>
+      <p class="lead">这页把 Day 2 该练的定位方式和基础交互集中到了一起，避免你一会儿换站点一会儿换结构。</p>
+    </section>
+
+    <section class="lab-section">
+      <h2>定位练习区</h2>
+      <div class="row two">
+        <div class="sample-box">
+          <h3 id="loc-title">稳定标题</h3>
+          <p class="locator-note" data-testid="summary-note">这个段落适合练 `css selector` 和 `xpath`。</p>
+          <a id="practice-link" href="#interaction-panel">跳转到交互区</a>
+          <div id="tag-box">
+            <span class="locator-chip">By.ID</span>
+            <span class="locator-chip">By.CLASS_NAME</span>
+            <span class="locator-chip">By.TAG_NAME</span>
+          </div>
+        </div>
+        <div class="sample-box">
+          <h3>结构化区域</h3>
+          <ul id="skills-list">
+            <li class="skill-item" data-skill="id">稳定 id</li>
+            <li class="skill-item" data-skill="css">css selector</li>
+            <li class="skill-item" data-skill="xpath">xpath</li>
+          </ul>
+          <div id="nested-container">
+            <p class="nested-label">这段文本适合练层级选择器。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="interaction-panel" class="lab-section">
+      <h2>交互练习区</h2>
+      <div class="row two">
+        <div class="stack">
+          <div>
+            <label for="login-username">用户名</label>
+            <input id="login-username" name="username" type="text" placeholder="输入用户名">
+          </div>
+          <div>
+            <label for="login-password">密码</label>
+            <input id="login-password" name="password" type="password" placeholder="输入密码">
+          </div>
+          <div class="button-row">
+            <button id="fill-demo" type="button">填充演示值</button>
+            <button id="clear-username" class="secondary" type="button">清空用户名</button>
+            <button id="submit-login" type="button">提交登录表单</button>
+          </div>
+        </div>
+        <div class="stack">
+          <div>
+            <label>
+              <input id="agree-policy" name="agree_policy" type="checkbox">
+              同意练习站使用说明
+            </label>
+          </div>
+          <div>
+            <label>
+              <input id="radio-python" name="language" type="radio" value="python" checked>
+              Python 主线
+            </label>
+            <label>
+              <input id="radio-java" name="language" type="radio" value="java">
+              Java 对照
+            </label>
+          </div>
+          <div>
+            <label for="target-level">目标阶段</label>
+            <select id="target-level" name="target_level">
+              <option value="day2">Day 2</option>
+              <option value="day3">Day 3</option>
+              <option value="day4">Day 4</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="row two">
+      <div class="status-box">
+        <strong>状态面板</strong>
+        <p id="login-status" class="result">尚未提交。</p>
+        <p id="attribute-status" data-role="status-display">当前未写入任何演示属性。</p>
+      </div>
+      <div class="console-box">
+        <strong>Day 2 重点可练能力</strong>
+        <p>推荐你练：`send_keys()`、`clear()`、`click()`、`.text`、`get_attribute()`、`is_displayed()`、`is_enabled()`。</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const username = document.getElementById("login-username");
+    const password = document.getElementById("login-password");
+    const agreePolicy = document.getElementById("agree-policy");
+    const targetLevel = document.getElementById("target-level");
+    const loginStatus = document.getElementById("login-status");
+    const attributeStatus = document.getElementById("attribute-status");
+
+    document.getElementById("fill-demo").addEventListener("click", function () {
+      username.value = "selenium_student";
+      password.value = "day2-pass";
+      username.setAttribute("data-filled", "true");
+      attributeStatus.textContent = "演示属性已写入，用户名输入框 data-filled=true。";
+    });
+
+    document.getElementById("clear-username").addEventListener("click", function () {
+      username.value = "";
+      username.focus();
+      attributeStatus.textContent = "用户名已清空。";
+    });
+
+    document.getElementById("submit-login").addEventListener("click", function () {
+      const language = document.querySelector('input[name="language"]:checked').value;
+      const agreed = agreePolicy.checked ? "已勾选协议" : "未勾选协议";
+      loginStatus.textContent = `已提交：${username.value || "空用户名"} / ${language} / ${targetLevel.value} / ${agreed}`;
+      loginStatus.setAttribute("data-status", "submitted");
+    });
+  </script>
+</body>
+</html>

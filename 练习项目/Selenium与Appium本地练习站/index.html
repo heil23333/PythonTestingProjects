@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Selenium 与 Appium 本地练习站</title>
+  <link rel="stylesheet" href="./static/style.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <p class="eyebrow">Local Practice Lab</p>
+      <h1>Selenium 与 Appium 本地练习站</h1>
+      <p class="lead">这套页面按课程节奏设计，目标不是“能打开”，而是“能把当天内容真正练到”。</p>
+      <div class="callout">
+        <strong>启动提示：</strong>
+        <span>使用 `python3 -m http.server 8000 --directory '练习项目/Selenium与Appium本地练习站'` 启动。</span>
+      </div>
+    </section>
+
+    <section class="grid cards">
+      <a class="card" href="./pages/day1.html">
+        <h2>Day 1</h2>
+        <p>自动化入门与第一个 Selenium 脚本</p>
+      </a>
+      <a class="card" href="./pages/day2.html">
+        <h2>Day 2</h2>
+        <p>元素定位与页面交互练习场</p>
+      </a>
+      <a class="card" href="./pages/day3.html">
+        <h2>Day 3</h2>
+        <p>动态等待、断言与异常观察</p>
+      </a>
+      <a class="card" href="./pages/day4_login.html">
+        <h2>Day 4</h2>
+        <p>登录、参数化、pytest 与 POM</p>
+      </a>
+    </section>
+
+    <section class="panel">
+      <h2>建议学习顺序</h2>
+      <ol>
+        <li>先用 Day 1 页面把“打开、输入、点击、获取文本”跑通。</li>
+        <li>再用 Day 2 页面练定位方式和元素交互。</li>
+        <li>接着用 Day 3 页面练显式等待和异常排查。</li>
+        <li>最后在 Day 4 登录链路上接入 pytest 和 POM。</li>
+      </ol>
+    </section>
+  </main>
+</body>
+</html>

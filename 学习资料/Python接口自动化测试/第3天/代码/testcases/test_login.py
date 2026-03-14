@@ -9,6 +9,7 @@ from config.settings import BASE_URL
 DATA_FILE = Path(__file__).parent.parent/"data"/"login_cases.json"
 LOGIN_CASES = json.loads(DATA_FILE.read_text(encoding="utf-8"))
 
+@pytest.mark.smoke
 @pytest.mark.parametrize("case", LOGIN_CASES)
 def test_login(case):
     resp = send_request(

@@ -44,4 +44,4 @@ def test_product_create_query_delete(auth_headers):
 
     assert query_resp.status_code == 404
     assert query_body["code"] == 10041
-    assert query_body["message"] == "product not found"
+    assert query_body["message"] == "product not found1"

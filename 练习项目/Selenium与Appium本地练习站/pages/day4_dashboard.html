@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 4 - 仪表盘页</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <main class="shell">
+    <nav class="nav">
+      <a href="../index.html">首页</a>
+      <a href="./day1.html">Day 1</a>
+      <a href="./day2.html">Day 2</a>
+      <a href="./day3.html">Day 3</a>
+      <a class="active" href="./day4_login.html">Day 4</a>
+    </nav>
+
+    <section class="hero">
+      <p class="eyebrow">Day 4 Dashboard</p>
+      <h1 id="dashboard-title">课程仪表盘</h1>
+      <p id="welcome-message" class="lead">正在验证登录状态...</p>
+      <div class="button-row">
+        <a class="button-link secondary" href="./day4_login.html">返回登录页</a>
+        <button id="logout-button" type="button">退出登录</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>今日任务看板</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>任务</th>
+            <th>状态</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody id="task-table-body">
+          <tr>
+            <td>登录页封装</td>
+            <td>待完成</td>
+            <td>提取用户名、密码、角色和提交动作</td>
+          </tr>
+          <tr>
+            <td>参数化用例</td>
+            <td>待完成</td>
+            <td>覆盖成功和失败组合</td>
+          </tr>
+          <tr>
+            <td>欢迎语断言</td>
+            <td>待完成</td>
+            <td>校验用户与角色显示</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="status-box">
+      <strong>角色标签</strong>
+      <p id="role-badge" class="result empty-state">尚未识别角色。</p>
+    </section>
+  </main>
+
+  <script>
+    const storedUser = sessionStorage.getItem("day4_user");
+    const welcomeMessage = document.getElementById("welcome-message");
+    const roleBadge = document.getElementById("role-badge");
+
+    if (!storedUser) {
+      welcomeMessage.textContent = "未检测到登录信息，请先回到登录页。";
+      roleBadge.textContent = "无角色信息";
+      roleBadge.setAttribute("data-status", "missing");
+    } else {
+      const user = JSON.parse(storedUser);
+      welcomeMessage.textContent = `欢迎你，${user.username}。你已成功进入 Day 4 仪表盘。`;
+      roleBadge.textContent = `当前角色：${user.role}`;
+      roleBadge.setAttribute("data-role", user.role);
+    }
+
+    document.getElementById("logout-button").addEventListener("click", function () {
+      sessionStorage.removeItem("day4_user");
+      window.location.href = "./day4_login.html";
+    });
+  </script>
+</body>
+</html>

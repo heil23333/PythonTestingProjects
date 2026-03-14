@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 1 - Selenium 入门练习页</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <main class="shell">
+    <nav class="nav">
+      <a href="../index.html">首页</a>
+      <a class="active" href="./day1.html">Day 1</a>
+      <a href="./day2.html">Day 2</a>
+      <a href="./day3.html">Day 3</a>
+      <a href="./day4_login.html">Day 4</a>
+    </nav>
+
+    <section class="hero">
+      <p class="eyebrow">Day 1</p>
+      <h1>Selenium 入门练习页</h1>
+      <p class="lead">这页只服务于 Day 1 的学习目标：打开页面、输入、点击、获取文本、关闭浏览器。</p>
+    </section>
+
+    <section class="playground">
+      <h2>Day 1 表单区</h2>
+      <p class="subtle">提交后会在结果区生成可断言的文本，适合你的第一个 Selenium 脚本。</p>
+      <form id="day1-form" class="stack">
+        <div class="row two">
+          <div>
+            <label for="day1-name">姓名输入框</label>
+            <input id="day1-name" name="user_name" type="text" placeholder="请输入你的名字">
+          </div>
+          <div>
+            <label for="day1-role">学习角色</label>
+            <input id="day1-role" name="study_role" type="text" placeholder="例如：自动化测试学习者">
+          </div>
+        </div>
+        <div>
+          <button id="day1-submit" type="submit">提交 Day 1 练习</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="row two">
+      <div class="status-box">
+        <strong>结果区</strong>
+        <p id="day1-message" class="result">请先提交表单。</p>
+      </div>
+      <div class="info-card">
+        <h3>推荐你在 Day 1 练到的点</h3>
+        <span class="locator-chip">By.ID</span>
+        <span class="locator-chip">By.NAME</span>
+        <span class="locator-chip">By.TAG_NAME</span>
+        <p>今天先不要急着上复杂定位，先把最小执行链路走通。</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById("day1-form");
+    const nameInput = document.getElementById("day1-name");
+    const roleInput = document.getElementById("day1-role");
+    const message = document.getElementById("day1-message");
+
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      const fallbackName = nameInput.value.trim() || "同学";
+      const fallbackRole = roleInput.value.trim() || "Selenium 初学者";
+      message.textContent = `提交成功：${fallbackName}，欢迎进入 ${fallbackRole} 的第一个自动化练习。`;
+      message.setAttribute("data-status", "submitted");
+
+      const response = await fetch("/api/day1/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: nameInput.value,
+          role: roleInput.value
+        })
+      });
+
+      const result = await response.json();
+      message.textContent = result.message;
+    });
+  </script>
+</body>
+</html>

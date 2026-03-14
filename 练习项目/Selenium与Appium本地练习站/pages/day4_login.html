@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 4 - 登录页</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <main class="shell">
+    <nav class="nav">
+      <a href="../index.html">首页</a>
+      <a href="./day1.html">Day 1</a>
+      <a href="./day2.html">Day 2</a>
+      <a href="./day3.html">Day 3</a>
+      <a class="active" href="./day4_login.html">Day 4</a>
+    </nav>
+
+    <section class="hero">
+      <p class="eyebrow">Day 4</p>
+      <h1>登录页：pytest 与 POM 练习入口</h1>
+      <p class="lead">这页适合练 fixture、参数化和页面对象。登录成功后会跳转到仪表盘页，失败则保留错误提示。</p>
+    </section>
+
+    <section class="playground">
+      <div class="row two">
+        <form id="login-form" class="stack">
+          <div>
+            <label for="day4-username">用户名</label>
+            <input id="day4-username" name="username" type="text" placeholder="例如：tester">
+          </div>
+          <div>
+            <label for="day4-password">密码</label>
+            <input id="day4-password" name="password" type="password" placeholder="例如：Selenium123">
+          </div>
+          <div>
+            <label for="day4-role">角色</label>
+            <select id="day4-role" name="role">
+              <option value="qa">QA</option>
+              <option value="dev">DEV</option>
+              <option value="pm">PM</option>
+            </select>
+          </div>
+          <div class="button-row">
+            <button id="day4-login" type="submit">登录</button>
+            <button id="fill-valid-user" class="secondary" type="button">填充有效账号</button>
+          </div>
+        </form>
+
+        <div class="info-card">
+          <h3>推荐练法</h3>
+          <ul>
+            <li>把登录动作封装到 `LoginPage` 页面对象</li>
+            <li>把成功页断言放到 `DashboardPage`</li>
+            <li>用 `pytest.mark.parametrize` 组合成功和失败数据</li>
+          </ul>
+          <p class="subtle">有效账号：`tester / Selenium123 / qa`</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="row two">
+      <div class="status-box">
+        <strong>登录状态</strong>
+        <p id="login-feedback" class="result">请填写账号信息并登录。</p>
+      </div>
+      <div class="console-box">
+        <strong>可断言点</strong>
+        <p>`错误提示文本`、`URL 变化`、`欢迎语`、`角色标签`、`退出登录按钮可见`。</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById("login-form");
+    const feedback = document.getElementById("login-feedback");
+    const usernameInput = document.getElementById("day4-username");
+    const passwordInput = document.getElementById("day4-password");
+    const roleInput = document.getElementById("day4-role");
+
+    document.getElementById("fill-valid-user").addEventListener("click", function () {
+      usernameInput.value = "tester";
+      passwordInput.value = "Selenium123";
+      roleInput.value = "qa";
+      feedback.textContent = "已填充有效账号，可直接提交。";
+    });
+
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      feedback.textContent = "正在校验登录信息...";
+
+      const response = await fetch("/api/day4/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          username: usernameInput.value,
+          password: passwordInput.value,
+          role: roleInput.value
+        })
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.ok) {
+        sessionStorage.setItem("day4_user", JSON.stringify(result.user));
+        window.location.href = result.redirect;
+        return;
+      }
+
+      feedback.textContent = result.message;
+      feedback.setAttribute("data-status", "error");
+    });
+  </script>
+</body>
+</html>

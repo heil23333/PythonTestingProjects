@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 3 - 等待与异常练习页</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <main class="shell">
+    <nav class="nav">
+      <a href="../index.html">首页</a>
+      <a href="./day1.html">Day 1</a>
+      <a href="./day2.html">Day 2</a>
+      <a class="active" href="./day3.html">Day 3</a>
+      <a href="./day4_login.html">Day 4</a>
+    </nav>
+
+    <section class="hero">
+      <p class="eyebrow">Day 3</p>
+      <h1>等待机制、断言与异常观察练习页</h1>
+      <p class="lead">这页故意加入了延迟显示、延迟可点击和元素重渲染，方便你练显式等待和问题排查。</p>
+    </section>
+
+    <section class="lab-section">
+      <h2>动态内容区</h2>
+      <div class="button-row">
+        <button id="start-loading" type="button">开始动态加载</button>
+        <button id="enable-action" class="secondary" type="button">3 秒后启用按钮</button>
+        <button id="rerender-list" class="secondary" type="button">重渲染列表</button>
+      </div>
+      <div class="row two" style="margin-top: 16px;">
+        <div class="status-box">
+          <strong>加载状态</strong>
+          <span id="loading-pill" class="status-pill warn">等待开始</span>
+          <p id="delayed-message" class="result">动态结果尚未出现。</p>
+        </div>
+        <div class="status-box">
+          <strong>按钮状态</strong>
+          <button id="delayed-action" type="button" disabled>延迟操作按钮</button>
+          <p id="action-result">按钮目前不可点击。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="lab-section">
+      <h2>重渲染观察区</h2>
+      <p class="subtle">如果你先拿到列表项元素，再点击“重渲染列表”，旧元素引用会失效，适合观察 `StaleElementReferenceException` 背后的场景。</p>
+      <div id="rebuild-zone" class="sample-box">
+        <ul id="rebuild-list">
+          <li class="rebuild-item">初始项 A</li>
+          <li class="rebuild-item">初始项 B</li>
+          <li class="rebuild-item">初始项 C</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="lab-section">
+      <h2>覆盖层观察区</h2>
+      <div class="overlay-zone">
+        <button id="covered-button" type="button">可能被遮挡的按钮</button>
+        <div id="blocking-overlay" class="overlay">
+          覆盖层 2 秒后自动消失
+        </div>
+      </div>
+      <p id="covered-result">覆盖层尚未移除。</p>
+    </section>
+  </main>
+
+  <script>
+    const loadingPill = document.getElementById("loading-pill");
+    const delayedMessage = document.getElementById("delayed-message");
+    const delayedAction = document.getElementById("delayed-action");
+    const actionResult = document.getElementById("action-result");
+    const rebuildZone = document.getElementById("rebuild-zone");
+    const overlay = document.getElementById("blocking-overlay");
+    const coveredResult = document.getElementById("covered-result");
+
+    setTimeout(function () {
+      overlay.classList.add("hidden");
+      coveredResult.textContent = "覆盖层已移除，现在按钮可点击。";
+    }, 2000);
+
+    document.getElementById("start-loading").addEventListener("click", async function () {
+      loadingPill.textContent = "加载中";
+      loadingPill.className = "status-pill warn";
+      delayedMessage.textContent = "正在等待后端结果...";
+
+      const response = await fetch("/api/day3/result?delay=2500");
+      const result = await response.json();
+      loadingPill.textContent = "已完成";
+      loadingPill.className = "status-pill ok";
+      delayedMessage.textContent = result.message;
+      delayedMessage.setAttribute("data-ready", String(result.ready));
+    });
+
+    document.getElementById("enable-action").addEventListener("click", async function () {
+      actionResult.textContent = "请等待 3 秒，按钮将从 disabled 变为 enabled。";
+      const response = await fetch("/api/day3/enable?delay=3000");
+      const result = await response.json();
+      delayedAction.disabled = !result.enabled;
+      actionResult.textContent = result.message;
+    });
+
+    delayedAction.addEventListener("click", function () {
+      actionResult.textContent = "延迟按钮点击成功。";
+      actionResult.setAttribute("data-clicked", "true");
+    });
+
+    document.getElementById("rerender-list").addEventListener("click", function () {
+      rebuildZone.innerHTML = `
+        <ul id="rebuild-list">
+          <li class="rebuild-item">重渲染项 X</li>
+          <li class="rebuild-item">重渲染项 Y</li>
+          <li class="rebuild-item">重渲染项 Z</li>
+        </ul>
+      `;
+    });
+
+    document.getElementById("covered-button").addEventListener("click", function () {
+      coveredResult.textContent = "覆盖层移除后，按钮点击成功。";
+    });
+  </script>
+</body>
+</html>
