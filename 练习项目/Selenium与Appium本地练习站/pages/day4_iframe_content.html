@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../static/style.css">
+  <title>Day 4 iframe 内容页</title>
+</head>
+<body>
+  <main class="frame-shell">
+    <section class="sample-box">
+      <p class="eyebrow">iframe Content</p>
+      <h3>这是 Day 4 的 iframe 内容区</h3>
+      <p id="frame-guide" class="subtle">你需要先切到这个 iframe，再完成输入和按钮点击。</p>
+      <div class="stack">
+        <div>
+          <label for="frame-username">iframe 用户名</label>
+          <input id="frame-username" name="frame-username" type="text" placeholder="例如：frame_user">
+        </div>
+        <div class="button-row">
+          <button id="frame-submit" type="button">提交 iframe 表单</button>
+          <button id="frame-fill" class="secondary" type="button">填充示例数据</button>
+        </div>
+      </div>
+      <div class="status-box top-gap">
+        <strong>iframe 结果</strong>
+        <p id="frame-result" class="result" data-state="idle">尚未提交 iframe 表单。</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const frameInput = document.getElementById("frame-username");
+    const frameResult = document.getElementById("frame-result");
+
+    document.getElementById("frame-fill").addEventListener("click", function () {
+      frameInput.value = "frame_user";
+      frameResult.textContent = "已填充 iframe 示例数据。";
+      frameResult.setAttribute("data-state", "filled");
+    });
+
+    document.getElementById("frame-submit").addEventListener("click", function () {
+      const value = frameInput.value.trim() || "匿名同学";
+      frameResult.textContent = `iframe 提交成功：${value}`;
+      frameResult.setAttribute("data-state", "submitted");
+      frameResult.setAttribute("data-user", value);
+    });
+  </script>
+</body>
+</html>

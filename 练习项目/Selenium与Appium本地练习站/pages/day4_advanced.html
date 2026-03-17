@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 4 - 复杂场景练习页</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <main class="shell">
+    <nav class="nav">
+      <a href="../index.html">首页</a>
+      <a href="./day1.html">Day 1</a>
+      <a href="./day2.html">Day 2</a>
+      <a href="./day3.html">Day 3</a>
+      <a href="./day4_login.html">Day 4 登录</a>
+      <a class="active" href="./day4_advanced.html">Day 4 复杂场景</a>
+    </nav>
+
+    <section class="hero">
+      <p class="eyebrow">Day 4 Advanced</p>
+      <h1>复杂场景练习页：iframe、弹窗、上传下载、多标签页</h1>
+      <p class="lead">这一页专门用来补 Day 4 的复杂上下文切换和特殊控件。你可以在本地完整练到 `switch_to.frame()`、`switch_to.alert`、文件上传以及标签页切换。</p>
+    </section>
+
+    <section class="panel">
+      <div class="row two">
+        <div class="info-card">
+          <h3>本页适合练什么</h3>
+          <ul>
+            <li>`switch_to.frame(...)` 与 `switch_to.default_content()`</li>
+            <li>`switch_to.alert`、`accept()`、`dismiss()`、`send_keys()`</li>
+            <li>`input[type="file"]` + `send_keys(绝对路径)`</li>
+            <li>`window_handles` 与 `switch_to.window(...)`</li>
+          </ul>
+        </div>
+        <div class="status-box">
+          <strong>页面外层断言点</strong>
+          <p id="advanced-host-note" class="result" data-state="host-ready">当前在主页面上下文，可先练 iframe，再切回主页面读这里的文本。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="playground">
+      <div class="row two">
+        <div class="sample-box">
+          <p class="eyebrow">Scenario 1</p>
+          <h2>iframe 练习区</h2>
+          <p class="subtle">先切进 iframe 完成输入与提交，再切回主页面读取外层断言点。</p>
+          <iframe
+            id="day4-practice-frame"
+            class="practice-frame"
+            src="./day4_iframe_content.html"
+            title="Day 4 iframe 练习区">
+          </iframe>
+        </div>
+
+        <div class="sample-box">
+          <p class="eyebrow">Scenario 2</p>
+          <h2>浏览器弹窗</h2>
+          <p class="subtle">这块覆盖 `alert`、`confirm` 和 `prompt` 三种浏览器原生弹窗。</p>
+          <div class="button-row">
+            <button id="trigger-alert" type="button">触发 alert</button>
+            <button id="trigger-confirm" class="secondary" type="button">触发 confirm</button>
+            <button id="trigger-prompt" class="secondary" type="button">触发 prompt</button>
+          </div>
+          <div class="stack mini-gap top-gap">
+            <div class="status-box">
+              <strong>alert 结果</strong>
+              <p id="alert-result" class="result" data-state="idle">尚未触发 alert。</p>
+            </div>
+            <div class="status-box">
+              <strong>confirm 结果</strong>
+              <p id="confirm-result" class="result" data-state="idle">尚未触发 confirm。</p>
+            </div>
+            <div class="status-box">
+              <strong>prompt 结果</strong>
+              <p id="prompt-result" class="result" data-state="idle">尚未触发 prompt。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="playground">
+      <div class="row two">
+        <div class="sample-box">
+          <p class="eyebrow">Scenario 3</p>
+          <h2>文件上传</h2>
+          <p class="subtle">这里不要想着点开系统窗口手动选文件，而是直接对文件输入框 `send_keys(绝对路径)`。</p>
+          <div class="stack">
+            <div>
+              <label for="upload-input">上传测试文件</label>
+              <input id="upload-input" name="upload-input" type="file">
+            </div>
+            <div class="status-box">
+              <strong>上传结果</strong>
+              <p id="upload-result" class="result" data-state="idle">尚未选择文件。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="sample-box">
+          <p class="eyebrow">Scenario 4</p>
+          <h2>文件下载与新标签页</h2>
+          <p class="subtle">Day 4 先建立概念：下载通常依赖浏览器配置，而多标签页切换依赖 `window_handles`。</p>
+          <div class="button-row">
+            <a id="download-template" class="button-link secondary" href="../static/day4_upload_template.txt" download>下载模板文件</a>
+            <a id="open-dashboard-tab" class="button-link" href="./day4_dashboard.html" target="_blank" rel="noopener">新标签页打开仪表盘</a>
+          </div>
+          <div class="status-box top-gap">
+            <strong>练习提示</strong>
+            <p id="download-note" class="result" data-state="download-ready">可以先断言下载链接的 `href`，再练点击后如何切换到新标签页。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const alertResult = document.getElementById("alert-result");
+    const confirmResult = document.getElementById("confirm-result");
+    const promptResult = document.getElementById("prompt-result");
+    const uploadInput = document.getElementById("upload-input");
+    const uploadResult = document.getElementById("upload-result");
+
+    document.getElementById("trigger-alert").addEventListener("click", function () {
+      alertResult.textContent = "alert 已触发，等待你点击确认。";
+      alertResult.setAttribute("data-state", "opened");
+      window.alert("Day 4 alert：请点击确定继续。");
+      alertResult.textContent = "alert 已处理完成。";
+      alertResult.setAttribute("data-state", "accepted");
+    });
+
+    document.getElementById("trigger-confirm").addEventListener("click", function () {
+      const accepted = window.confirm("Day 4 confirm：你要继续当前练习吗？");
+      if (accepted) {
+        confirmResult.textContent = "confirm 结果：你点击了确定。";
+        confirmResult.setAttribute("data-state", "accepted");
+        return;
+      }
+
+      confirmResult.textContent = "confirm 结果：你点击了取消。";
+      confirmResult.setAttribute("data-state", "dismissed");
+    });
+
+    document.getElementById("trigger-prompt").addEventListener("click", function () {
+      const value = window.prompt("Day 4 prompt：请输入课程暗号。", "selenium");
+      if (value === null) {
+        promptResult.textContent = "prompt 结果：你取消了输入。";
+        promptResult.setAttribute("data-state", "dismissed");
+        return;
+      }
+
+      promptResult.textContent = `prompt 结果：你输入了 ${value}。`;
+      promptResult.setAttribute("data-state", "accepted");
+      promptResult.setAttribute("data-value", value);
+    });
+
+    uploadInput.addEventListener("change", function () {
+      if (!uploadInput.files || uploadInput.files.length === 0) {
+        uploadResult.textContent = "尚未选择文件。";
+        uploadResult.setAttribute("data-state", "idle");
+        uploadResult.removeAttribute("data-file-name");
+        return;
+      }
+
+      const file = uploadInput.files[0];
+      uploadResult.textContent = `已选择文件：${file.name}`;
+      uploadResult.setAttribute("data-state", "selected");
+      uploadResult.setAttribute("data-file-name", file.name);
+    });
+  </script>
+</body>
+</html>

@@ -230,10 +230,24 @@ button[disabled] {
   background: #fffaf2;
 }
 
+.frame-shell {
+  margin: 0;
+  padding: 12px;
+  background: #f8f2e8;
+}
+
 .stack {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.mini-gap {
+  gap: 10px;
+}
+
+.top-gap {
+  margin-top: 12px;
 }
 
 .hidden {
@@ -295,6 +309,14 @@ button[disabled] {
   border-bottom: 1px solid #eadfce;
   padding: 12px;
   text-align: left;
+}
+
+.practice-frame {
+  width: 100%;
+  min-height: 340px;
+  border: 1px solid #ceb89a;
+  border-radius: 16px;
+  background: #fff;
 }
 
 .empty-state {
