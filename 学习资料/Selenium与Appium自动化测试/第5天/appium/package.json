@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "appium": "^3.2.2"
+  },
+  "devDependencies": {
+    "@appium/images-plugin": "^4.1.1",
+    "appium-espresso-driver": "^7.0.0",
+    "appium-inspector-plugin": "^2026.2.1",
+    "appium-uiautomator2-driver": "^7.0.0",
+    "appium-xcuitest-driver": "^10.32.1"
+  }
+}
